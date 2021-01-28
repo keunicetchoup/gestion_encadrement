@@ -1,12 +1,21 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
+# class UserProfileInfo(models.Model):
+
+
 class Candidat(models.Model):
+    SEXES = (
+        ('MASCULIN', 'MASCULIN'),
+        ('FEMININ', 'FEMININ'),
+        ('AUTRES', 'AUTRES'),
+    )
     noms = models.CharField(max_length=100)
     prenoms = models.CharField(max_length=100)
     date_naiss = models.DateField()
-    sexe = models.CharField(max_length=8)
+    sexe = models.CharField(max_length=25, choices=SEXES, default="AUTRES")
     nationalite = models.CharField(max_length=50)
     region = models.CharField(max_length=50)
     moyenne = models.FloatField()
@@ -14,7 +23,6 @@ class Candidat(models.Model):
     date_obt_licence = models.IntegerField()
     date_M1 = models.IntegerField()
     date_obt_M1 = models.IntegerField()
-
     date_M2 = models.IntegerField(blank=True, null=True)
     date_obt_M2 = models.IntegerField(blank=True, null=True)
 
@@ -24,10 +32,20 @@ class Candidat(models.Model):
 class Etudiant(Candidat):
     matricule = models.CharField(max_length=8)
 
+
+class Grade(models.Model):
+    titre = models.CharField(max_length=250)
+
+    def __str__(self):
+        return self.titre
+
 class Enseignant(models.Model):
     noms = models.CharField(max_length=50)
     prenoms = models.CharField(max_length=50)
-    grade = models.CharField(max_length=50)
+    grade = models.ForeignKey('Grade', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.grade.titre + " " + self.noms
 
 class Encadrement(models.Model):
     nbr_heures = models.IntegerField()
@@ -47,13 +65,12 @@ class Cursus(models.Model):
     annee_aca = models.ForeignKey(Annee_Aca, on_delete=models.CASCADE)
 
 class Jury(models.Model):
-    president = models.CharField(max_length=100)
-    rapporteur_1 = models.CharField(max_length=100)
-    rapporteur_2 = models.CharField(max_length=100, null=True)
-    encadreur_1 = models.CharField(max_length=100)
-    encadreur_2 = models.CharField(max_length=100, null=True)
-    encadreur_3 = models.CharField(max_length=100, null=True)
-    enseignants = models.ForeignKey(Enseignant, on_delete=models.CASCADE)
+    president = models.ForeignKey('Enseignant', on_delete=models.CASCADE, related_name='jury_from_president')
+    rapporteur_1 = models.ForeignKey('Enseignant', on_delete=models.CASCADE, related_name='jury_from_rapporteur_1')
+    rapporteur_2 = models.ForeignKey('Enseignant', on_delete=models.CASCADE, related_name='jury_from_rapporteur_2', null=True, blank=True)
+    encadreur_1 = models.ForeignKey('Enseignant', on_delete=models.CASCADE, related_name='jury_from_encadreur_1')
+    encadreur_2 = models.ForeignKey('Enseignant', on_delete=models.CASCADE, related_name='jury_from_encadreur_2', null=True, blank=True)
+    encadreur_3 = models.ForeignKey('Enseignant', on_delete=models.CASCADE, related_name='jury_from_encadreur_3', null=True, blank=True)
 
 class Soutenance(models.Model):
     date_stn = models.DateField(null=True)
