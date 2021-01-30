@@ -33,6 +33,9 @@ class Etudiant(Candidat):
     matricule = models.CharField(max_length=8)
 
 
+    def __str__(self):
+        return '{} {}'.format(self.noms, self.prenoms)
+
 class Grade(models.Model):
     titre = models.CharField(max_length=250)
 
@@ -51,7 +54,7 @@ class Encadrement(models.Model):
     nbr_heures = models.IntegerField()
     sujet = models.TextField()
     enseignants = models.ManyToManyField(Enseignant)
-    etudiants = models.ForeignKey(Etudiant, on_delete=models.CASCADE)
+    etudiants = models.ForeignKey(Etudiant, on_delete=models.CASCADE, related_name='encadrements')
 
 class Annee_Aca(models.Model):
     annee_deb = models.IntegerField()
@@ -72,14 +75,16 @@ class Jury(models.Model):
     encadreur_2 = models.ForeignKey('Enseignant', on_delete=models.CASCADE, related_name='jury_from_encadreur_2', null=True, blank=True)
     encadreur_3 = models.ForeignKey('Enseignant', on_delete=models.CASCADE, related_name='jury_from_encadreur_3', null=True, blank=True)
 
+    def __str__(self):
+        return "Jury {}".format(self.pk)
 class Soutenance(models.Model):
     date_stn = models.DateField(null=True)
     type_stn = models.CharField(max_length=30)
-    note = models.IntegerField()
-    mention = models.CharField(max_length=20)
+    note = models.IntegerField(blank=True, null=True)
+    mention = models.CharField(max_length=20, blank=True)
     num_comm = models.CharField(max_length=20)
     etudiants = models.ForeignKey(Etudiant, on_delete=models.CASCADE)
-
+    jury = models.ForeignKey(Jury, on_delete=models.CASCADE)
 
 
 

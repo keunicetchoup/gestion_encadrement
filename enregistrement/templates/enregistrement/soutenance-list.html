@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10">
+        {% if messages %}
+        <div class="alert alert-success" role="alert">
+            {% for message in messages %}
+            {{message}}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <h4>Liste des soutenance</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+
+                    <th scope="col">Date</th>
+                    <th scope="col">Etudiant</th>
+                    <th scope="col">Theme</th>
+                    <th scope="col">Jury</th>
+                    <th scope="col">Mention</th>
+                    <th scope="col">Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for soutenance in object_list %}
+                <tr> 
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{soutenance.date_stn}}</td>
+                    <td>{{soutenance.etudiants}} <br> ({{soutenance.etudiants.matricule}})</td>
+                    <td>{{soutenance.etudiants.encadrements.first.sujet}}</td>
+                    <td>
+                        <ul>
+                            <li>{{soutenance.jury.president}} ({{soutenance.jury.president.grade}})</li>
+                            <li>{{soutenance.jury.rapporteur_1}} ({{soutenance.jury.rapporteur_1.grade}})</li>
+                            <li>{{soutenance.jury.encadreur_1}} ({{soutenance.jury.encadreur_1.grade}})</li>
+                        </ul>
+                    </td>
+                    <td>{{soutenance.mention|default:0}}</td>
+                    <td>{{soutenance.note|default:0}}</td>
+                    <!-- <td>
+                        <a href="{% url 'enregistrement:etudiant-delete' pk=soutenance.pk %}" class="btn btn-danger">
+                            <i class="bi-trash"></i>
+                        </a>
+                        <a href="{% url 'enregistrement:etudiant-update' pk=soutenance.pk %}" class="btn btn-primary">
+                            <i class="bi-pencil"></i>
+                        </a>
+                    </td> -->
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endblock content %}

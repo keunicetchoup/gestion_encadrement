@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+      <div class="col-lg-5">
+          <form method="POST">
+              {% csrf_token %}
+            <div class="alert alert-danger">
+                Voulez vous vraiment supprimer {{object}}
+            </div>
+
+            <input type="hidden" name="" value="Confirm">
+
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+          </form>
+      </div>
+  </div>
+{% endblock content %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10">
+        {% if messages %}
+        <div class="alert alert-success" role="alert">
+            {% for message in messages %}
+            {{message}}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <h4>Liste des jury</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">President</th>
+                    <th scope="col">Rapporteur 1</th>
+                    <th scope="col">Rapporteur 2</th>
+                    <th scope="col">Encadreur 1</th>
+                    <th scope="col">Encadreur 2</th>
+                    <th scope="col">Encadreur 3</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for jury in object_list %}
+                <tr> 
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{jury.president}}</td>
+                    <td>{{jury.rapporteur_1}}</td>
+                    <td>{{jury.rapporteur_2}}</td>
+                    <td>{{jury.encadreur_1}}</td>
+                    <td>{{jury.encadreur_2}}</td>
+                    <td>{{jury.encadreur_3}}</td>
+                    <td>
+                        <a href="{% url 'enregistrement:etudiant-delete' pk=jury.pk %}" class="btn btn-danger">
+                            <i class="bi-trash"></i>
+                        </a>
+                        <a href="{% url 'enregistrement:etudiant-update' pk=jury.pk %}" class="btn btn-primary">
+                            <i class="bi-pencil"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endblock content %}

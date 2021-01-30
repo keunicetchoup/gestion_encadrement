@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        {% if messages %}
+        <div class="alert alert-success" role="alert">
+            {% for message in messages %}
+            {{message}}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <h4>Liste des encadrements</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Etudiant (Matricule)</th>
+                    <th scope="col">Sujet</th>
+                    <th scope="col">Enseignants</th>
+                    <th scope="col">Total heures</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for encadrement in object_list %}
+                <tr> 
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{encadrement.etudiant.noms}} {{encadrement.etudiant.matricule}}</td>
+                    <td>{{encadrement.sujet}}</td>
+                    <td><ul>{% for enseignant in encadrement.enseignants.all %}
+                      <li>{{enseignant.noms}}</li>
+                    {% endfor %}</ul></td>
+                    <td>{{encadrement.nbr_heures}}</td>
+                    <td>
+                        <a href="{% url 'enregistrement:encadrement-delete' pk=enseignant.pk %}" class="btn btn-danger">
+                            <i class="bi-trash"></i>
+                        </a>
+                        <a href="{% url 'enregistrement:encadrement-update' pk=encadrement.pk %}" class="btn btn-primary">
+                            <i class="bi-pencil"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endblock content %}

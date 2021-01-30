@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        {% if messages %}
+        <div class="alert alert-success" role="alert">
+            {% for message in messages %}
+            {{message}}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <h4>Liste des étudiants</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prenom</th>
+                    <th scope="col">Matricule</th>
+                    <th scope="col">Sexe</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for etudiant in object_list %}
+                <tr> 
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{etudiant.noms}}</td>
+                    <td>{{etudiant.prenoms}}</td>
+                    <td>{{etudiant.matricule}}</td>
+                    <td>{{etudiant.sexe}}</td>
+                    <td>
+                        <a href="{% url 'enregistrement:etudiant-delete' pk=etudiant.pk %}" class="btn btn-danger">
+                            <i class="bi-trash"></i>
+                        </a>
+                        <a href="{% url 'enregistrement:etudiant-update' pk=etudiant.pk %}" class="btn btn-primary">
+                            <i class="bi-pencil"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endblock content %}
