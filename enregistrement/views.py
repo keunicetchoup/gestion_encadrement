@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Etudiant, Enseignant, Encadrement, Annee_Aca, Cursus, Jury, Soutenance
+from .models import Etudiant, Enseignant, Encadrement, Annee_Aca, Niveau, Parcours, Departement, Jury, Soutenance
 from .forms import *
 
 
@@ -85,7 +85,7 @@ class EnseignantUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 class EncadrementCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     login_url = '/login/'
     template_name = 'enregistrement/form.html'
-    success_url = reverse_lazy('enregistrement:enseignant-list')
+    success_url = reverse_lazy('enregistrement:encadrement-list')
     success_message = 'Encadrement ajouté avec succès !'
     form_class = EncadrementModelForm
 
@@ -173,3 +173,4 @@ class JuryListView(LoginRequiredMixin, ListView):
     login_url = '/login/'
     template_name = 'enregistrement/jury-list.html'
     model = Jury
+    

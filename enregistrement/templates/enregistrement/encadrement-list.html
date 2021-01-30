@@ -33,7 +33,7 @@
                     {% endfor %}</ul></td>
                     <td>{{encadrement.nbr_heures}}</td>
                     <td>
-                        <a href="{% url 'enregistrement:encadrement-delete' pk=enseignant.pk %}" class="btn btn-danger">
+                        <a href="{% url 'enregistrement:encadrement-delete' pk=encadrement.pk %}" class="btn btn-danger">
                             <i class="bi-trash"></i>
                         </a>
                         <a href="{% url 'enregistrement:encadrement-update' pk=encadrement.pk %}" class="btn btn-primary">
